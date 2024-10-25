@@ -3,7 +3,7 @@
 /.env.local.php
 /.env.*.local
 /.env.staging
-/.env.production
+/.env.prod
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/

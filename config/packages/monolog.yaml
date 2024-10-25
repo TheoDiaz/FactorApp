@@ -1,28 +1,26 @@
 monolog:
     channels:
-        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - deprecation # Dédié aux avertissements de dépréciation
 
+# Configuration pour l'environnement de développement
 when@dev:
     monolog:
         handlers:
             main:
                 type: stream
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                path: "php://stdout" # Rediriger vers stdout en développement
                 level: debug
                 channels: ["!event"]
-            # uncomment to get logging in your browser
-            # you may have to allow bigger header sizes in your Web server configuration
-            #firephp:
-            #    type: firephp
-            #    level: info
-            #chromephp:
-            #    type: chromephp
-            #    level: info
             console:
                 type: console
                 process_psr_3_messages: false
                 channels: ["!event", "!doctrine", "!console"]
+            deprecation:
+                type: stream
+                path: "php://stdout" # Dépréciations également redirigées vers stdout
+                channels: [deprecation]
 
+# Configuration pour l'environnement de test
 when@test:
     monolog:
         handlers:
@@ -34,9 +32,10 @@ when@test:
                 channels: ["!event"]
             nested:
                 type: stream
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                path: "%kernel.logs_dir%/%kernel.environment%.log" # Fichier local pour les logs en test
                 level: debug
 
+# Configuration pour l'environnement de production
 when@prod:
     monolog:
         handlers:
@@ -45,12 +44,12 @@ when@prod:
                 action_level: error
                 handler: nested
                 excluded_http_codes: [404, 405]
-                buffer_size: 50 # How many messages should be saved? Prevent memory leaks
+                buffer_size: 50 # Empêche les fuites de mémoire en limitant les messages sauvegardés
             nested:
                 type: stream
-                path: php://stderr
-                level: debug
-                formatter: monolog.formatter.json
+                path: "php://stdout" # Redirection vers stdout en production
+                level: info
+                formatter: monolog.formatter.json # Format JSON pour une analyse plus facile
             console:
                 type: console
                 process_psr_3_messages: false
@@ -58,5 +57,5 @@ when@prod:
             deprecation:
                 type: stream
                 channels: [deprecation]
-                path: php://stderr
+                path: "php://stdout" # Dépréciations également vers stdout
                 formatter: monolog.formatter.json

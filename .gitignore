@@ -1,8 +1,9 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
 /.env.*.local
+/.env.staging
+/.env.production
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
@@ -17,9 +18,34 @@
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
+/coverage/
 ###< symfony/phpunit-bridge ###
 
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+### Fichiers de cache et de logs Symfony ###
+/var/cache/
+/var/log/
+
+### Fichiers de configuration temporaire ###
+/var/tmp/
+
+### Fichiers d'éditeurs de code ###
+.vscode/
+/.idea/
+*~
+
+### Docker (optionnel, si utilisé) ###
+/docker-compose.override.yml
+/docker/*.log
+
+### Rapports de tests et couverture de code ###
+/coverage/
+
+### Fichiers de sauvegarde automatiques ###
+*.bak
+*.swp
+*~
